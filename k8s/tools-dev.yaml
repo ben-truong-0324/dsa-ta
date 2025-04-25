@@ -1,0 +1,89 @@
+---
+# pgAdmin Deployment + Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin
+  namespace: dsata
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 83
+      targetPort: 83
+      nodePort: 32001
+  selector:
+    app: pgadmin
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin
+  namespace: dsata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+    spec:
+      containers:
+        - name: pgadmin
+          image: dpage/pgadmin4
+          ports:
+            - containerPort: 83
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: "admin@local.dev"
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: "admin"
+          volumeMounts:
+            - mountPath: /var/lib/pgadmin
+              name: pgadmin-storage
+      volumes:
+        - name: pgadmin-storage
+          emptyDir: {}
+
+---
+# Kafdrop Deployment + Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafdrop
+  namespace: dsata
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 9000
+      targetPort: 9000
+      nodePort: 32002
+  selector:
+    app: kafdrop
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafdrop
+  namespace: dsata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafdrop
+  template:
+    metadata:
+      labels:
+        app: kafdrop
+    spec:
+      containers:
+        - name: kafdrop
+          image: obsidiandynamics/kafdrop
+          ports:
+            - containerPort: 9000
+          env:
+            - name: KAFKA_BROKERCONNECT
+              value: "kafka.dsata.svc.cluster.local:9092"
+            - name: SERVER_SERVLET_CONTEXTPATH
+              value: "/"

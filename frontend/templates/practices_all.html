@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Practices</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+  <!-- Header -->
+  <header class="mb-6 text-center">
+    <h1 class="text-4xl font-bold text-indigo-800">All Practice Problems</h1>
+  </header>
+
+  <!-- Filter -->
+  <div class="mb-6 flex justify-end">
+    <select id="tagFilter" onchange="filterCards()" class="border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none">
+      <option value="all">All Tags</option>
+      <option value="Array">Array</option>
+      <option value="Linked List">Linked List</option>
+      <option value="DP">DP</option>
+      <option value="Math">Math</option>
+    </select>
+  </div>
+
+  <!-- Practice Cards Grid -->
+  <div id="practiceGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for prob in problems %}
+    <div class="bg-white rounded-lg shadow p-4" data-tags="{{ prob.tags|join(', ') }}">
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-bold text-gray-800">{{ prob.name }}</h2>
+        {% for tag in prob.tags %}
+          <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      <button onclick="toggleDetails(this)" class="mt-2 text-sm text-indigo-600 hover:underline">View Details</button>
+      <div class="mt-3 hidden text-gray-700">
+        <p><strong>Description:</strong> {{ prob.description }}</p>
+        <p><strong>Test Case:</strong> <code>{{ prob.test_cases }}</code></p>
+        <a href="/notebook?problem={{ prob.name | replace(' ', '-')}}"
+           class="mt-2 inline-block text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm">
+           To Notebook
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-8 text-center">
+    <button class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 mx-1">1</button>
+    <button class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 mx-1">2</button>
+    <button class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 mx-1">Next</button>
+  </div>
+</div>
+
+<script>
+  function toggleDetails(button) {
+    const detail = button.nextElementSibling;
+    detail.classList.toggle('hidden');
+  }
+
+  function filterCards() {
+    const filter = document.getElementById('tagFilter').value;
+    const cards = document.querySelectorAll('#practiceGrid > div');
+    cards.forEach(card => {
+      const tags = card.getAttribute('data-tags');
+      if (filter === 'all' || tags.includes(filter)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

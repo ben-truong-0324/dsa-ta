@@ -1,0 +1,6 @@
+Flask
+requests
+Authlib
+gunicorn
+kafka-python
+jinja2

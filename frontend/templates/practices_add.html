@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Practice Added</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <div class="container mx-auto px-4 py-8 max-w-7xl">
+    <!-- Header -->
+    <header class="mb-8 text-center">
+      <h1 class="text-4xl font-bold text-indigo-800 mb-2">Practice Added Successfully</h1>
+      <p class="text-gray-600">Here’s what you just added</p>
+    </header>
+
+    <!-- Link to All Practices -->
+    <div class="mb-6 text-center">
+      <a href="/all-practices" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition">
+        View All Practices
+      </a>
+    </div>
+
+    <!-- Recently Added Table -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Recently Added</h2>
+      <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full text-sm text-left text-gray-700">
+          <thead class="bg-indigo-100 text-indigo-800">
+            <tr>
+              <th class="px-4 py-3">Problem</th>
+              <th class="px-4 py-3">Tags</th>
+              <th class="px-4 py-3">Toggle</th>
+            </tr>
+          </thead>
+          <tbody id="problemTable">
+            {% for prob in batch["problems"] %}
+              <tr class="border-b hover:bg-gray-50 cursor-pointer" onclick="toggleRow('p{{ loop.index }}')">
+                <td class="px-4 py-3 font-medium">{{ prob.name }}</td>
+                <td class="px-4 py-3">
+                  <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Batch</span>
+                </td>
+                <td class="px-4 py-3 text-sm text-blue-600">{{ prob.status }}</td>
+              </tr>
+              <tr id="p{{ loop.index }}" class="hidden bg-gray-50 border-b">
+                <td colspan="3" class="px-4 py-4 text-gray-600">
+                  <strong>Status:</strong> {{ prob.status }}<br/>
+                  {% if prob.error %}<strong>Error:</strong> {{ prob.error }}{% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination placeholder -->
+      <div class="mt-4 text-center text-sm text-gray-500">Showing 1-5 of 20 results</div>
+    </section>
+
+    <!-- Aggregated Stats -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Submission Summary</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-indigo-600">Total Added</h3>
+          <p class="text-2xl font-bold">15</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-yellow-600">Pending</h3>
+          <p class="text-2xl font-bold">4</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-medium text-green-600">Completed</h3>
+          <p class="text-2xl font-bold">11</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Visualization Section -->
+    <section class="mb-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Practice Stats</h2>
+      
+        <!-- Donut Charts Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Tag Distribution</h3>
+            <canvas id="tagDistributionChart" height="100" class="p-2"></canvas>
+          </div>
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Completion Ratio</h3>
+            <canvas id="completionChart" height="100" class="p-2"></canvas>
+          </div>
+        </div>
+      
+        <!-- Stacked Bar Chart -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Total Problems Added by Type</h3>
+          <canvas id="problemStackChart" height="70" class="p-2"></canvas>
+        </div>
+      </section>
+  
+
+    <!-- How To Solve Notes -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">How to Solve by Tag</h2>
+      <div class="space-y-4">
+        <div class="bg-white rounded-lg p-4 shadow">
+          <h3 class="text-xl font-bold text-blue-700 mb-2">Array</h3>
+          <p class="text-gray-600">Use two-pointer or sliding window techniques. Familiarize yourself with in-place manipulation patterns.</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow">
+          <h3 class="text-xl font-bold text-purple-700 mb-2">Linked List</h3>
+          <p class="text-gray-600">Know how to use dummy nodes and handle edge cases like empty or single-node lists.</p>
+        </div>
+        <!-- More manually added sections -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-sm text-gray-500 border-t pt-4">
+      © 2025 Practice App. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    function toggleRow(id) {
+      const row = document.getElementById(id);
+      row.classList.toggle('hidden');
+    }
+
+    window.onload = () => {
+    const ctx1 = document.getElementById('tagDistributionChart');
+    const ctx2 = document.getElementById('completionChart');
+    const ctx3 = document.getElementById('problemStackChart');
+
+    new Chart(ctx1, {
+      type: 'doughnut',
+      data: {
+        labels: ['Array', 'Linked List', 'DP', 'Math'],
+        datasets: [{
+          data: [5, 3, 4, 3],
+          backgroundColor: ['#60a5fa', '#a78bfa', '#f87171', '#34d399']
+        }]
+      }
+    });
+
+    new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['Completed', 'Pending'],
+        datasets: [{
+          data: [11, 4],
+          backgroundColor: ['#10b981', '#facc15']
+        }]
+      }
+    });
+
+    new Chart(ctx3, {
+  type: 'bar',
+  data: {
+    labels: ['Array', 'Linked List', 'DP', 'Math'],
+    datasets: [
+      {
+        label: 'Completed',
+        data: [3, 2, 2, 4],
+        backgroundColor: '#10b981',
+        stack: 'Status',
+        barThickness: 16
+      },
+      {
+        label: 'Unfinished',
+        data: [2, 1, 2, 1],
+        backgroundColor: '#f87171',
+        stack: 'Status',
+        barThickness: 16
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom'
+      }
+    },
+    scales: {
+      x: {
+        stacked: true
+      },
+      y: {
+        stacked: true
+      }
+    }
+  }
+});
+
+  };
+  </script>
+</body>
+</html>

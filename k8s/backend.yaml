@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: fastapi-backend
+          image: dsata/backend
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          volumeMounts:
+          - name: notebook-storage
+            mountPath: /mnt/notebooks
+      volumes:
+        - name: notebook-storage
+          persistentVolumeClaim:
+            claimName: notebook-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend
+  ports:
+    - port: 80
+      targetPort: 8000

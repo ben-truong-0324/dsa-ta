@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dsata AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Tailwind configuration for playful colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pet-pink': '#FFD6E0',
+                        'pet-blue': '#C4E1FF',
+                        'pet-purple': '#E0C4FF',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome for cute icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom animation for the upload area */
+        .upload-area:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .upload-area {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pet-pink to-pet-blue min-h-screen">
+    <!-- Main Container -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Add Practice Column -->
+        <div class="flex flex-col">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Add Practice</h2>
+            <input type="text" placeholder="Enter new practice item" class="mb-3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400">
+            <button class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg w-max">
+                Add
+            </button>
+        </div>
+    
+        <!-- Start Coding Column -->
+        <div class="flex flex-col justify-center items-start md:items-center">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Ready to Practice?</h2>
+            <button class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg">
+                Start Coding
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript for basic image preview functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const petPhoto = document.getElementById('petPhoto');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const changePhoto = document.getElementById('changePhoto');
+            const uploadArea = document.querySelector('.upload-area');
+
+            // Show preview when image is selected
+            petPhoto.addEventListener('change', function(event) {
+                if (event.target.files.length > 0) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        previewContainer.classList.remove('hidden');
+                        uploadArea.classList.add('hidden');
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            });
+
+            // Allow changing the photo
+            changePhoto.addEventListener('click', function() {
+                petPhoto.value = '';
+                previewContainer.classList.add('hidden');
+                uploadArea.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

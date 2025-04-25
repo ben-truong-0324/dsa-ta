@@ -1,0 +1,15 @@
+numpy
+pandas
+fastapi
+uvicorn
+pydantic
+python-jose
+requests
+kafka-python
+nbclient
+asyncpg 
+sqlalchemy 
+databases
+prometheus-fastapi-instrumentator
+prometheus-client
+httpx
