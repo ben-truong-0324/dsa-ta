@@ -15,18 +15,28 @@ spec:
       containers:
         - name: ollama
           image: dsata/ollama
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
           ports:
             - containerPort: 11434
+          volumeMounts:
+            - mountPath: /root/.ollama
+              name: ollama-data
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+      volumes:
+        - name: ollama-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: ollama
 spec:
-  type: LoadBalancer
   selector:
     app: ollama
   ports:
-    - port: 82
+    - protocol: TCP
+      port: 11434
       targetPort: 11434
+  type: ClusterIP 

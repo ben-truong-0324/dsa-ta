@@ -1,9 +1,6 @@
 @echo off
 echo 🚀 Starting dsata Deployment with Local Docker Builds + Minikube Tunnel...
 
-:: Step 0: Check Minikube and Docker
-where minikube >nul 2>nul || (echo ❌ Minikube not found. Please install it first. & exit /b)
-where docker >nul 2>nul || (echo ❌ Docker not found. Please install Docker CLI. & exit /b)
 
 :: Step 1: Configure Minikube Docker daemon
 echo 🔄 Setting Docker to use Minikube's internal Docker engine...
@@ -29,11 +26,11 @@ kubectl apply -f k8s/
 
 :: Step 5: Wait for critical services to be ready
 echo ⏳ Waiting for Deployments to become available...
-kubectl wait --for=condition=available deployment/frontend --timeout=120s
-kubectl wait --for=condition=available deployment/backend --timeout=120s
-kubectl wait --for=condition=available deployment/ollama --timeout=120s
-kubectl wait --for=condition=available deployment/jupyter --timeout=120s
-kubectl wait --for=condition=available deployment/grafana --timeout=120s
+kubectl wait --for=condition=available deployment/frontend --timeout=240s
+kubectl wait --for=condition=available deployment/backend --timeout=240s
+kubectl wait --for=condition=available deployment/ollama --timeout=240s
+kubectl wait --for=condition=available deployment/jupyter --timeout=240s
+kubectl wait --for=condition=available deployment/grafana --timeout=240s
 
 :: Step 6: Output service endpoints
 echo 🌍 Getting service IPs and Ingress rules...

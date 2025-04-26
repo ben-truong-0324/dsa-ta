@@ -5,7 +5,9 @@ from typing import List
 
 import nbformat, os, random
 from nbformat.v4 import new_notebook, new_code_cell, new_markdown_cell
-from nbclient import NotebookClient, CellExecutionError
+from nbclient import NotebookClient
+from nbclient.exceptions import CellExecutionError 
+
 from sqlalchemy import and_
 from prometheus_fastapi_instrumentator import Instrumentator
 

@@ -7,24 +7,14 @@
 - Minikube
 - kubectl
 
-### ✅ 1. Start Minikube
-```bash
-minikube start
-```
-
-### 🔄 2. Point Docker to Minikube
-```bash
-minikube -p minikube docker-env
-```
-
-### ⚙️ 3. Deploy Everything
+### ⚙️ 1. Deploy Everything
 ```bash
 minikube start -p dsata
 minikube profile dsata 
-minikube -p minikube docker-env
-kubectl config use-context dsata
+minikube -p minikube docker-envkubectl config use-context dsata
 kubectl create namespace dsata
 kubectl config set-context --current --namespace=dsata
+timeout /t 5 >nul
 .\scripts\deploy_win.bat
 ```
 > This script builds images, deletes and reapplies all manifests, and shows you the service IPs

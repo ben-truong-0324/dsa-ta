@@ -1,7 +1,10 @@
+# k8s/ollama/Dockerfile
+
+# Use the Ollama image with GPU support
 FROM ollama/ollama
 
-# Preload the desired model during build (optional)
-RUN ollama pull tinyllama
+# Expose the Ollama default port
+EXPOSE 11434
 
-# Use entrypoint override or startup command
+# Start Ollama server by default
 CMD ["ollama", "serve"]

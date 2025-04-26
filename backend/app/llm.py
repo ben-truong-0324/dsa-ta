@@ -27,7 +27,7 @@ async def generate_from_ollama(problem_name: str, model=MODEL_NAME) -> Tuple[str
     try:
         async with httpx.AsyncClient(timeout=20.0) as client:
             response = await client.post(
-                "http://ollama:11434/api/generate",
+                "ollama.dsata.svc.cluster.local:11434/api/generate",
                 json={"prompt": prompt, "model": MODEL_NAME}  # or whatever your model is
             )
             response.raise_for_status()

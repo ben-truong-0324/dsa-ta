@@ -13,14 +13,14 @@ spec:
         app: backend
     spec:
       containers:
-        - name: fastapi-backend
-          image: dsata/backend
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 80
-          volumeMounts:
-          - name: notebook-storage
-            mountPath: /mnt/notebooks
+      - name: fastapi-backend
+        image: dsata/backend
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: notebook-storage
+          mountPath: /mnt/notebooks
       volumes:
         - name: notebook-storage
           persistentVolumeClaim:

@@ -48,42 +48,42 @@ spec:
 
 ---
 # Kafdrop Deployment + Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: kafdrop
-  namespace: dsata
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 9000
-      targetPort: 9000
-      nodePort: 32002
-  selector:
-    app: kafdrop
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: kafdrop
-  namespace: dsata
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: kafdrop
-  template:
-    metadata:
-      labels:
-        app: kafdrop
-    spec:
-      containers:
-        - name: kafdrop
-          image: obsidiandynamics/kafdrop
-          ports:
-            - containerPort: 9000
-          env:
-            - name: KAFKA_BROKERCONNECT
-              value: "kafka.dsata.svc.cluster.local:9092"
-            - name: SERVER_SERVLET_CONTEXTPATH
-              value: "/"
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: kafdrop
+#   namespace: dsata
+# spec:
+#   type: LoadBalancer
+#   ports:
+#     - port: 9000
+#       targetPort: 9000
+#       nodePort: 32002
+#   selector:
+#     app: kafdrop
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: kafdrop
+#   namespace: dsata
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: kafdrop
+#   template:
+#     metadata:
+#       labels:
+#         app: kafdrop
+#     spec:
+#       containers:
+#         - name: kafdrop
+#           image: obsidiandynamics/kafdrop
+#           ports:
+#             - containerPort: 9000
+#           env:
+#             - name: KAFKA_BROKERCONNECT
+#               value: "kafka.dsata.svc.cluster.local:9092"
+#             - name: SERVER_SERVLET_CONTEXTPATH
+#               value: "/"

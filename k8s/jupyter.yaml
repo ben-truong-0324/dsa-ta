@@ -25,13 +25,23 @@ spec:
     spec:
       containers:
         - name: jupyter
-          image: jupyter/base-notebook:latest
+          image: jupyter/base-notebook:latest # Or a more specific recent tag if preferred
           ports:
             - containerPort: 8888
           volumeMounts:
             - name: notebook-storage
               mountPath: /home/jovyan/work
-          args: ["start-notebook.sh", "--NotebookApp.token=''"]
+          # --- UPDATED ARGS ---
+          args:
+            [
+              "start-notebook.py",
+              "--ServerApp.token=''",
+              "--ServerApp.port=8888",
+              "--ServerApp.ip='0.0.0.0'",  # Explicitly listen on all interfaces
+              "--ServerApp.allow_origin='*'", # Often needed depending on access method
+              "--ServerApp.notebook_dir='/home/jovyan/work'" # Explicitly set workdir
+            ]
+          # --- END UPDATED ARGS ---
       volumes:
         - name: notebook-storage
           persistentVolumeClaim:
